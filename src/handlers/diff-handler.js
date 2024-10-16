@@ -2,12 +2,58 @@ import { readFile } from "fs/promises";
 import path from "path";
 import { DEFAULT_CHARSET } from "./constants.js";
 
-const readFiles = async (filePathOne, filePathTwo) => {
+const parseContent = (content, type) => {
+  if (type === "json") {
+    return JSON.parse(content);
+  }
+
+  return "";
+};
+
+const diff = (left, rigth) => {
+  const diff = Object.entries({ ...left, ...rigth });
+  const res = ['{', '\n'];
+
+  for (const [key, value] of diff) {
+    if (Object.hasOwn(left, key) && !Object.hasOwn(rigth, key)) {
+      res.push(` - ${key}: ${value}\n`);
+    }
+
+    if (!Object.hasOwn(left, key) && Object.hasOwn(rigth, key)) {
+      res.push(` + ${key}: ${value}\n`);
+    }
+
+    if (Object.hasOwn(rigth, key) && Object.hasOwn(left, key)) {
+      const item =
+        left[key] === rigth[key]
+          ? `   ${key}: ${value}\n`
+          : ` - ${key}: ${rigth[key]}\n + ${key}: ${left[key]}\n`;
+      res.push(item);
+    }
+  }
+  
+  res.push('}')
+
+  return res.join('');
+};
+
+const readFiles = async (...filePaths) => {
+  const files = filePaths.slice(0, 2);
+  const [fileOneType, fileTwoType] = files.map((file) =>
+    file.split(".").at(-1)
+  );
   try {
-    const fileOne = await readFile(path.resolve(filePathOne), DEFAULT_CHARSET);
-    const fileTwo = await readFile(path.resolve(filePathTwo), DEFAULT_CHARSET);
-    console.log(JSON.parse(fileOne), JSON.parse(fileTwo));
-  } catch {
+    const filePromises = files.map((filePath) =>
+      readFile(path.resolve(filePath), DEFAULT_CHARSET)
+    );
+    const [fileOne, fileTwo] = await Promise.all(filePromises);
+    console.log(
+      diff(
+        parseContent(fileOne, fileOneType),
+        parseContent(fileTwo, fileTwoType)
+      )
+    );
+  } catch (e) {
     console.log(e.message);
   }
 };
