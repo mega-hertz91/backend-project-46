@@ -11,7 +11,7 @@ const parseContent = (content, type) => {
 };
 
 const diff = (left, rigth) => {
-  const diff = Object.entries({ ...left, ...rigth });
+  const diff = Object.entries({ ...left, ...rigth }).sort();
   const res = ['{', '\n'];
 
   for (const [key, value] of diff) {
@@ -31,7 +31,7 @@ const diff = (left, rigth) => {
       res.push(item);
     }
   }
-  
+
   res.push('}')
 
   return res.join('');
