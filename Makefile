@@ -1,11 +1,8 @@
-install: deps-install
-	npx simple-git-hooks
+install:
+	npm ci
 
 run:
 	bin/nodejs-package.js 10
-
-deps-install:
-	npm ci
 
 deps-update:
 	npx ncu -u
