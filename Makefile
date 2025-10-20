@@ -1,9 +1,26 @@
- install: ;@echo "Installing....."; \
+install: deps-install
+	npx simple-git-hooks
+
+run:
+	bin/nodejs-package.js 10
+
+deps-install:
 	npm ci
 
- gendiff: ;@echo "Run diff....."; \
-    node bin/gendiff.js --help
+deps-update:
+	npx ncu -u
 
+test:
+	npm test
 
- publish: ;@echo "Publish brain-games....."; \
-    npm publish --dry-run
+test-coverage:
+	npm test -- --coverage
+
+lint:
+	npx eslint .
+
+lint-fix:
+	npx eslint . --fix
+
+publish:
+	npx release-it

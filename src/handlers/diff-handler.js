@@ -10,24 +10,24 @@ const parseContent = (content, type) => {
   return "";
 };
 
-const diff = (left, rigth) => {
-  const diff = Object.entries({ ...left, ...rigth }).sort();
+const diff = (left, right) => {
+  const diff = Object.entries({ ...left, ...right }).sort();
   const res = ['{', '\n'];
 
   for (const [key, value] of diff) {
-    if (Object.hasOwn(left, key) && !Object.hasOwn(rigth, key)) {
+    if (Object.hasOwn(left, key) && !Object.hasOwn(right, key)) {
       res.push(` - ${key}: ${value}\n`);
     }
 
-    if (!Object.hasOwn(left, key) && Object.hasOwn(rigth, key)) {
+    if (!Object.hasOwn(left, key) && Object.hasOwn(right, key)) {
       res.push(` + ${key}: ${value}\n`);
     }
 
-    if (Object.hasOwn(rigth, key) && Object.hasOwn(left, key)) {
+    if (Object.hasOwn(right, key) && Object.hasOwn(left, key)) {
       const item =
-        left[key] === rigth[key]
+        left[key] === right[key]
           ? `   ${key}: ${value}\n`
-          : ` - ${key}: ${rigth[key]}\n + ${key}: ${left[key]}\n`;
+          : ` - ${key}: ${right[key]}\n + ${key}: ${left[key]}\n`;
       res.push(item);
     }
   }
