@@ -4,3 +4,15 @@ export const Extension = {
   YAML: 'yaml',
   YML: 'yml'
 };
+
+export const Action = {
+  ADD: 'add',
+  DELETE: 'delete',
+  UPDATE: 'update',
+  SAVE: 'save',
+}
+
+export const Symbol = {
+  [Action.ADD]: '+ ',
+  [Action.DELETE]: '- ',
+}
