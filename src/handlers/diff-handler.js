@@ -1,7 +1,8 @@
 import {JsonFormatter} from "../formatters/index.js";
 import {diffObjects, parseFiles, readFiles} from "../utils/index.js";
+import {Format} from "../constants.js";
 
-const run = async (source, comparable) => {
+const run = async (source, comparable, { format = Format.STYLISH }) => {
   const contents = await readFiles(source, comparable);
 
   const [src, compare] = await Promise.all(
@@ -11,15 +12,18 @@ const run = async (source, comparable) => {
     )
   );
 
-  const result = JsonFormatter(diffObjects(src, compare), ' ', 4);
+  const diff = diffObjects(src, compare)
 
-  console.log(result);
+  switch (format) {
+    case Format.STYLISH: return  console.log(JsonFormatter(diff, ' ', 4))
+    default: return  console.log(diff)
+  }
 }
 
 export default async (program) => {
   await program
     .argument("<filepath1>")
     .argument("<filepath2>")
-    .option("-f --format [type]", "output format")
+    .option("-f --format [type]", "output format", "stylish")
     .action(run)
 };

@@ -16,3 +16,7 @@ export const Symbol = {
   [Action.ADD]: '+ ',
   [Action.DELETE]: '- ',
 }
+
+export const Format = {
+  STYLISH: 'stylish',
+}

@@ -67,4 +67,49 @@ describe('Nested structure test', () => {
 
     expect(result).toBe(compareResult)
   })
+
+  test('Test files format yaml, nested structure', async () => {
+    const files = await readFiles('__fixtures__/3.yaml', '__fixtures__/4.yaml');
+
+    const [src, compare] = await Promise.all(
+      files.map(
+        ({file, extension}) =>
+          parseFiles(file, extension)
+      )
+    );
+
+    const result = JsonFormatter(diffObjects(src, compare), ' ', 4);
+
+    expect(result).toBe(compareResult)
+  })
+
+  test('Test files format yaml to json, nested structure', async () => {
+    const files = await readFiles('__fixtures__/3.yaml', '__fixtures__/4.json');
+
+    const [src, compare] = await Promise.all(
+      files.map(
+        ({file, extension}) =>
+          parseFiles(file, extension)
+      )
+    );
+
+    const result = JsonFormatter(diffObjects(src, compare), ' ', 4);
+
+    expect(result).toBe(compareResult)
+  })
+
+  test('Test files format json to yaml, nested structure', async () => {
+    const files = await readFiles('__fixtures__/3.json', '__fixtures__/4.yaml');
+
+    const [src, compare] = await Promise.all(
+      files.map(
+        ({file, extension}) =>
+          parseFiles(file, extension)
+      )
+    );
+
+    const result = JsonFormatter(diffObjects(src, compare), ' ', 4);
+
+    expect(result).toBe(compareResult)
+  })
 })
