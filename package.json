@@ -16,7 +16,8 @@
   "author": "ibabushkin@elma-bpm.com",
   "license": "ISC",
   "dependencies": {
-    "commander": "^12.1.0"
+    "commander": "^12.1.0",
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",

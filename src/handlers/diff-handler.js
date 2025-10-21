@@ -1,10 +1,15 @@
 import { readFile } from "fs/promises";
+import jsYaml from "js-yaml";
 import path from "path";
-import { DEFAULT_CHARSET } from "./constants.js";
+import {DEFAULT_CHARSET, Extension} from "../constants.js";
 
-const parseContent = (content, type) => {
-  if (type === "json") {
-    return JSON.parse(content);
+const parseContent = async (content, type) => {
+  if (type === Extension.JSON) {
+    return await JSON.parse(content);
+  }
+
+  if (type === Extension.YAML || type === Extension.YML) {
+    return await jsYaml.load(content);
   }
 
   return "";
@@ -37,31 +42,37 @@ const diff = (left, right) => {
   return res.join('');
 };
 
-const readFiles = async (...filePaths) => {
-  const files = filePaths.slice(0, 2);
-  const [fileOneType, fileTwoType] = files.map((file) =>
-    file.split(".").at(-1)
-  );
+const readFiles = async (...files) => {
   try {
     const filePromises = files.map((filePath) =>
       readFile(path.resolve(filePath), DEFAULT_CHARSET)
+        .then((file) => ({
+          extension: filePath.split('.').at(-1),
+          file
+        }))
     );
-    const [fileOne, fileTwo] = await Promise.all(filePromises);
-    console.log(
-      diff(
-        parseContent(fileOne, fileOneType),
-        parseContent(fileTwo, fileTwoType)
-      )
-    );
+
+    return await Promise.all(filePromises);
   } catch (e) {
-    console.log(e.message);
+    console.error(e);
+    process.exit(1);
   }
 };
+
+const run = async (source, comparable) => {
+  const contents = await readFiles(source, comparable);
+
+  const [src, compare] = await Promise.all(contents.map(({ file, extension }) => parseContent(file, extension)));
+
+  const result = diff(src, compare);
+
+  console.log(result);
+}
 
 export default async (program) => {
   await program
     .argument("<filepath1>")
     .argument("<filepath2>")
     .option("-f --format [type]", "output format")
-    .action(readFiles);
+    .action(run)
 };
