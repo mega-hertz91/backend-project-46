@@ -8,27 +8,27 @@ const normalizeValue = (value, cb) => {
   }
 }
 
-const jsonFormatter = (arr, replacer = ' ', repeater = 2, step = 1) => {
+const stylishFormatter = (arr, replacer = ' ', repeater = 2, step = 1) => {
   const res = arr.map(({key, value, replaceValue, action, children}) => {
     if (children) {
       return replacer.repeat(repeater * step) +
         key +
         ': ' +
-        jsonFormatter(children, replacer, repeater, step + 1)
+        stylishFormatter(children, replacer, repeater, step + 1)
     }
 
     if (action === Action.UPDATE) {
       return replacer.repeat((repeater * step) - 2) +
         Symbol[Action.DELETE] + key + ': ' +
-        normalizeValue(value, (value) => jsonFormatter(value, replacer, repeater, step + 1)) +
+        normalizeValue(value, (value) => stylishFormatter(value, replacer, repeater, step + 1)) +
         '\n' +
         replacer.repeat((repeater * step) - 2) +
-        Symbol[Action.ADD] + key + ': ' + normalizeValue(replaceValue, (value) => jsonFormatter(value, replacer, repeater, step + 1))
+        Symbol[Action.ADD] + key + ': ' + normalizeValue(replaceValue, (value) => stylishFormatter(value, replacer, repeater, step + 1))
     }
 
 
     return replacer.repeat(action ? (repeater * step) -2 : repeater * step) +
-      (action ? Symbol[action] + key: key) + ': ' + normalizeValue(value, (value) => jsonFormatter(value, replacer, repeater, step + 1))
+      (action ? Symbol[action] + key: key) + ': ' + normalizeValue(value, (value) => stylishFormatter(value, replacer, repeater, step + 1))
   })
 
 
@@ -43,6 +43,6 @@ const jsonFormatter = (arr, replacer = ' ', repeater = 2, step = 1) => {
     .join('\n')
 };
 
-export default jsonFormatter;
+export default stylishFormatter;
 
 

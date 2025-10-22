@@ -1,4 +1,4 @@
-import {JsonFormatter} from "../formatters/index.js";
+import {stylishFormatter, plainFormatter} from "../formatters/index.js";
 import {diffObjects, parseFiles, readFiles} from "../utils/index.js";
 import {Format} from "../constants.js";
 
@@ -15,8 +15,18 @@ const run = async (source, comparable, { format = Format.STYLISH }) => {
   const diff = diffObjects(src, compare)
 
   switch (format) {
-    case Format.STYLISH: return  console.log(JsonFormatter(diff, ' ', 4))
-    default: return  console.log(diff)
+    case Format.STYLISH:
+      return  console.log(
+        stylishFormatter(diff, ' ', 4)
+      )
+    case Format.PLAIN:
+      return  console.log(
+        plainFormatter(diff)
+      )
+    default:
+      return  console.log(
+        JSON.stringify(diff, null, 4)
+      )
   }
 }
 

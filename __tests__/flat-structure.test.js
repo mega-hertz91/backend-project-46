@@ -2,7 +2,7 @@
 
 import {expect, test, describe} from '@jest/globals'
 import {readFiles, parseFiles, diffObjects} from '../src/utils/index.js';
-import {JsonFormatter} from "../src/formatters/index.js";
+import {stylishFormatter} from "../src/formatters/index.js";
 
 describe('Flat structure test', () => {
   const compareResult = '{\n' +
@@ -24,7 +24,7 @@ describe('Flat structure test', () => {
       )
     );
 
-    const result = JsonFormatter(diffObjects(src, compare), ' ', 4);
+    const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
 
     expect(result).toBe(compareResult)
   })
@@ -39,7 +39,7 @@ describe('Flat structure test', () => {
       )
     );
 
-    const result = JsonFormatter(diffObjects(src, compare), ' ', 4);
+    const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
 
     expect(result).toBe(compareResult)
   })
@@ -54,7 +54,7 @@ describe('Flat structure test', () => {
       )
     );
 
-    const result = JsonFormatter(diffObjects(src, compare), ' ', 4);
+    const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
 
     expect(result).toBe(compareResult)
   })
@@ -69,7 +69,7 @@ describe('Flat structure test', () => {
       )
     );
 
-    const result = JsonFormatter(diffObjects(src, compare), ' ', 4);
+    const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
 
     expect(result).toBe(compareResult)
   })

@@ -19,4 +19,5 @@ export const Symbol = {
 
 export const Format = {
   STYLISH: 'stylish',
+  PLAIN: 'plain',
 }

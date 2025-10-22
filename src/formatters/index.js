@@ -1,4 +1,4 @@
-import JsonFormatter from './json.formatter.js';
-import PlainFormatter from './plain.formatter.js';
+import stylishFormatter from './stylish.formatter.js';
+import plainFormatter from './plain.formatter.js';
 
-export {JsonFormatter, PlainFormatter};
+export {stylishFormatter, plainFormatter};
