@@ -2,10 +2,9 @@
 
 import {expect, test, describe} from '@jest/globals'
 import {readFiles, parseFiles, diffObjects} from '../src/utils/index.js';
-import {stylishFormatter} from "../src/formatters/index.js";
+import {plainFormatter, stylishFormatter} from "../src/formatters/index.js";
 
-describe('Nested structure test', () => {
-  const compareResult = `{
+const stylishResult = `{
     common: {
       + follow: false
         setting1: Value 1
@@ -53,6 +52,20 @@ describe('Nested structure test', () => {
     test: true
 }`
 
+const plainResult = `Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: blah blah
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From  to so much
+Property 'common.setting6.ops' was added with value: vops
+Property 'group1.baz' was updated. From bas to bars
+Property 'group1.nest' was updated. From [complex value] to str
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]
+Property 'replace' was updated. From true to false`
+
+describe('Nested structure test', () => {
   test('Test files format json, nested structure', async () => {
     const files = await readFiles('__fixtures__/3.json', '__fixtures__/4.json');
 
@@ -65,7 +78,7 @@ describe('Nested structure test', () => {
 
     const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
 
-    expect(result).toBe(compareResult)
+    expect(result).toBe(stylishResult)
   })
 
   test('Test files format yaml, nested structure', async () => {
@@ -80,7 +93,7 @@ describe('Nested structure test', () => {
 
     const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
 
-    expect(result).toBe(compareResult)
+    expect(result).toBe(stylishResult)
   })
 
   test('Test files format yaml to json, nested structure', async () => {
@@ -95,7 +108,7 @@ describe('Nested structure test', () => {
 
     const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
 
-    expect(result).toBe(compareResult)
+    expect(result).toBe(stylishResult)
   })
 
   test('Test files format json to yaml, nested structure', async () => {
@@ -110,6 +123,21 @@ describe('Nested structure test', () => {
 
     const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
 
-    expect(result).toBe(compareResult)
+    expect(result).toBe(stylishResult)
+  })
+
+  test('Test files format json to yaml, nested structure', async () => {
+    const files = await readFiles('__fixtures__/3.json', '__fixtures__/4.yaml');
+
+    const [src, compare] = await Promise.all(
+      files.map(
+        ({file, extension}) =>
+          parseFiles(file, extension)
+      )
+    );
+
+    const result = plainFormatter(diffObjects(src, compare));
+
+    expect(result).toBe(plainResult)
   })
 })
