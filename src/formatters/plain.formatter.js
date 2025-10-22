@@ -6,8 +6,10 @@ const normalizeValue = (value) => {
       return parseInt(value);
     case "object":
       return value ? {...value, toString() { return '[complex value]' } } : value;
-    default:
+    case "boolean":
       return value;
+    default:
+      return `'${value}'`;
   }
 }
 
