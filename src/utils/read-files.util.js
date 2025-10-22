@@ -1,21 +1,15 @@
-import {readFile} from "fs/promises";
+import {readFileSync} from "fs";
 import path from "path";
 import {DEFAULT_CHARSET} from "../constants.js";
 
 // {file, extension}
-export default async (...files) => {
+export default (...files) => {
   try {
-    const filePromises = files.map((filePath) =>
-      readFile(path.resolve(filePath), DEFAULT_CHARSET)
-        .then((file) => ({
-          extension: filePath.split('.').at(-1),
-          file
-        }))
-    );
-
-    return await Promise.all(filePromises);
+    return files.map((filePath) => ({
+      extension: filePath.split('.').at(-1),
+      file: readFileSync(path.resolve(filePath), DEFAULT_CHARSET)
+    }));
   } catch (e) {
     console.error(e);
-    process.exit(1);
   }
 };

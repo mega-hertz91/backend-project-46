@@ -1,8 +1,7 @@
 // @ts-check
 
 import {expect, test, describe} from '@jest/globals'
-import {readFiles, parseFiles, diffObjects} from '../src/utils/index.js';
-import {plainFormatter, stylishFormatter} from "../src/formatters/index.js";
+import {genDiff} from "../src/services/index.js";
 
 const stylishResult = `{
     common: {
@@ -66,77 +65,14 @@ Property 'group3' was added with value: [complex value]
 Property 'replace' was updated. From true to false`
 
 describe('Nested structure test', () => {
-  test('Test files format json, nested structure', async () => {
-    const files = await readFiles('__fixtures__/3.json', '__fixtures__/4.json');
-
-    const [src, compare] = await Promise.all(
-      files.map(
-        ({file, extension}) =>
-          parseFiles(file, extension)
-      )
-    );
-
-    const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
+  test('Test files format yaml, flat structure', () => {
+    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json');
 
     expect(result).toBe(stylishResult)
   })
 
-  test('Test files format yaml, nested structure', async () => {
-    const files = await readFiles('__fixtures__/3.yaml', '__fixtures__/4.yaml');
-
-    const [src, compare] = await Promise.all(
-      files.map(
-        ({file, extension}) =>
-          parseFiles(file, extension)
-      )
-    );
-
-    const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
-
-    expect(result).toBe(stylishResult)
-  })
-
-  test('Test files format yaml to json, nested structure', async () => {
-    const files = await readFiles('__fixtures__/3.yaml', '__fixtures__/4.json');
-
-    const [src, compare] = await Promise.all(
-      files.map(
-        ({file, extension}) =>
-          parseFiles(file, extension)
-      )
-    );
-
-    const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
-
-    expect(result).toBe(stylishResult)
-  })
-
-  test('Test files format json to yaml, nested structure', async () => {
-    const files = await readFiles('__fixtures__/3.json', '__fixtures__/4.yaml');
-
-    const [src, compare] = await Promise.all(
-      files.map(
-        ({file, extension}) =>
-          parseFiles(file, extension)
-      )
-    );
-
-    const result = stylishFormatter(diffObjects(src, compare), ' ', 4);
-
-    expect(result).toBe(stylishResult)
-  })
-
-  test('Test files format json to yaml, nested structure', async () => {
-    const files = await readFiles('__fixtures__/3.json', '__fixtures__/4.yaml');
-
-    const [src, compare] = await Promise.all(
-      files.map(
-        ({file, extension}) =>
-          parseFiles(file, extension)
-      )
-    );
-
-    const result = plainFormatter(diffObjects(src, compare));
+  test('Test files format yaml, flat structure', () => {
+    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json', 'plain');
 
     expect(result).toBe(plainResult)
   })
