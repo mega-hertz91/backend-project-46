@@ -16,16 +16,10 @@ export default async (source, comparable, format = Format.STYLISH) => {
 
   switch (format) {
     case Format.STYLISH:
-      return  console.log(
-        stylishFormatter(diff, ' ', 4)
-      )
+      return stylishFormatter(diff, ' ', 4)
     case Format.PLAIN:
-      return  console.log(
-        plainFormatter(diff)
-      )
+      return plainFormatter(diff)
     default:
-      return  console.log(
-        JSON.stringify(diff, null, 4)
-      )
+      return JSON.stringify(diff, null, 4)
   }
 }

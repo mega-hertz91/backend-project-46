@@ -2,7 +2,8 @@ import {Format} from "../constants.js";
 import {genDiff}  from "../services/index.js";
 
 const run = async (source, comparable, { format = Format.STYLISH }) => {
-  await genDiff(source, comparable, format);
+  const result = await genDiff(source, comparable, format);
+  console.log(result);
 }
 
 export default async (program) => {
