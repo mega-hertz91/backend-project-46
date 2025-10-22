@@ -1,7 +1,7 @@
 // @ts-check
 
-import {expect, test, describe} from '@jest/globals'
-import {genDiff} from "../src/services/index.js";
+import { expect, test, describe } from '@jest/globals'
+import { genDiff } from '../src/services/index.js'
 
 const stylishResult = `{
     common: {
@@ -66,13 +66,13 @@ Property 'replace' was updated. From true to false`
 
 describe('Nested structure test', () => {
   test('Test files format yaml, flat structure', () => {
-    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json');
+    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json')
 
     expect(result).toBe(stylishResult)
   })
 
   test('Test files format yaml, flat structure', () => {
-    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json', 'plain');
+    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json', 'plain')
 
     expect(result).toBe(plainResult)
   })

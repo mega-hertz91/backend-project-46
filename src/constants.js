@@ -1,9 +1,9 @@
-export const DEFAULT_CHARSET = "utf-8";
+export const DEFAULT_CHARSET = 'utf-8'
 export const Extension = {
   JSON: 'json',
   YAML: 'yaml',
-  YML: 'yml'
-};
+  YML: 'yml',
+}
 
 export const Action = {
   ADD: 'add',
