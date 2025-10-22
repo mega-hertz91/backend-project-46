@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env node
 
 import { Command } from "commander";
 import handlers from "../src/handlers/index.js";
