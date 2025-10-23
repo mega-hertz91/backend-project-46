@@ -2,6 +2,7 @@
 
 import { expect, test, describe } from '@jest/globals'
 import { genDiff } from '../src/services/index.js'
+import { Format } from '../src/constants.js'
 
 const stylishResult = `{
     common: {
@@ -64,15 +65,41 @@ Property 'group2' was removed
 Property 'group3' was added with value: [complex value]
 Property 'replace' was updated. From true to false`
 
-describe('Nested structure test', () => {
-  test('Test files format yaml, flat structure', () => {
+describe('Nested structure test stylish format', () => {
+  test('Test json > json', () => {
     const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json')
 
     expect(result).toBe(stylishResult)
   })
 
-  test('Test files format yaml, flat structure', () => {
-    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json', 'plain')
+  test('Test yaml > yaml', () => {
+    const result = genDiff('__fixtures__/3.yaml', '__fixtures__/4.yaml')
+
+    expect(result).toBe(stylishResult)
+  })
+
+  test('Test json > yaml', () => {
+    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.yaml')
+
+    expect(result).toBe(stylishResult)
+  })
+})
+
+describe('Nested structure test plain format', () => {
+  test('Test files yaml > yaml', () => {
+    const result = genDiff('__fixtures__/3.yaml', '__fixtures__/4.yaml', Format.PLAIN)
+
+    expect(result).toBe(plainResult)
+  })
+
+  test('Test files json > json', () => {
+    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json', Format.PLAIN)
+
+    expect(result).toBe(plainResult)
+  })
+
+  test('Test files json > yaml', () => {
+    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.yaml', Format.PLAIN)
 
     expect(result).toBe(plainResult)
   })

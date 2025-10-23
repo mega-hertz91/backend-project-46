@@ -3,3 +3,5 @@
 
 ### Test gendiff flatten files
 [![asciicast](https://asciinema.org/a/681258.svg)](https://asciinema.org/a/681258)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mega-hertz91_backend-project-46&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mega-hertz91_backend-project-46)
