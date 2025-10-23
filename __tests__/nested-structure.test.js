@@ -2,7 +2,7 @@
 
 import { expect, test, describe } from '@jest/globals'
 import { genDiff } from '../src/services/index.js'
-import { Format } from '../src/constants.js'
+import { Format, PIPELINE_TESTS } from '../src/constants.js'
 
 const stylishResult = `{
     common: {
@@ -66,41 +66,21 @@ Property 'group3' was added with value: [complex value]
 Property 'replace' was updated. From true to false`
 
 describe('Nested structure test stylish format', () => {
-  test('Test json > json', () => {
-    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json')
+  for (const { from, to } of PIPELINE_TESTS) {
+    test(`Test ${from} > ${to}`, () => {
+      const result = genDiff(`__fixtures__/3.${from}`, `__fixtures__/4.${to}`)
 
-    expect(result).toBe(stylishResult)
-  })
-
-  test('Test yaml > yaml', () => {
-    const result = genDiff('__fixtures__/3.yaml', '__fixtures__/4.yaml')
-
-    expect(result).toBe(stylishResult)
-  })
-
-  test('Test json > yaml', () => {
-    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.yaml')
-
-    expect(result).toBe(stylishResult)
-  })
+      expect(result).toBe(stylishResult)
+    })
+  }
 })
 
 describe('Nested structure test plain format', () => {
-  test('Test files yaml > yaml', () => {
-    const result = genDiff('__fixtures__/3.yaml', '__fixtures__/4.yaml', Format.PLAIN)
+  for (const { from, to } of PIPELINE_TESTS) {
+    test(`Test ${from} > ${to}`, () => {
+      const result = genDiff(`__fixtures__/3.${from}`, `__fixtures__/4.${to}`, Format.PLAIN)
 
-    expect(result).toBe(plainResult)
-  })
-
-  test('Test files json > json', () => {
-    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.json', Format.PLAIN)
-
-    expect(result).toBe(plainResult)
-  })
-
-  test('Test files json > yaml', () => {
-    const result = genDiff('__fixtures__/3.json', '__fixtures__/4.yaml', Format.PLAIN)
-
-    expect(result).toBe(plainResult)
-  })
+      expect(result).toBe(plainResult)
+    })
+  }
 })
