@@ -66,21 +66,11 @@ Property 'group3' was added with value: [complex value]
 Property 'replace' was updated. From true to false`
 
 describe('Nested structure test stylish format', () => {
-  for (const { from, to } of PIPELINE_TESTS) {
-    test(`Test ${from} > ${to}`, () => {
-      const result = genDiff(`__fixtures__/3.${from}`, `__fixtures__/4.${to}`)
+  for (const { from, to, format = Format.STYLISH } of PIPELINE_TESTS) {
+    test(`Test ${from} > ${to}, format ${format}`, () => {
+      const result = genDiff(`__fixtures__/3.${from}`, `__fixtures__/4.${to}`, format === Format.PLAIN ? Format.PLAIN : Format.STYLISH)
 
-      expect(result).toBe(stylishResult)
-    })
-  }
-})
-
-describe('Nested structure test plain format', () => {
-  for (const { from, to } of PIPELINE_TESTS) {
-    test(`Test ${from} > ${to}`, () => {
-      const result = genDiff(`__fixtures__/3.${from}`, `__fixtures__/4.${to}`, Format.PLAIN)
-
-      expect(result).toBe(plainResult)
+      expect(result).toBe(format === Format.PLAIN ? plainResult : stylishResult)
     })
   }
 })

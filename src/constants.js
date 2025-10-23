@@ -35,4 +35,19 @@ export const PIPELINE_TESTS = [
     from: Extension.JSON,
     to: Extension.YAML,
   },
+  {
+    from: Extension.YAML,
+    to: Extension.YAML,
+    format: Format.PLAIN,
+  },
+  {
+    from: Extension.JSON,
+    to: Extension.JSON,
+    format: Format.PLAIN,
+  },
+  {
+    from: Extension.JSON,
+    to: Extension.YAML,
+    format: Format.PLAIN,
+  },
 ]
